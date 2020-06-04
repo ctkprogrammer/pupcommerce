@@ -33,9 +33,7 @@ class CreateShipmentsTable extends Migration
             $table->foreign('buyer_id')->references('id')->on('buyers');
             $table->bigInteger('pup_id')->unsigned();
             $table->foreign('pup_id')->references('id')->on('pups');
-            $table->bigInteger('review_id')->unsigned();
-            $table->foreign('review_id')->references('id')->on('reviews');
-
+            
             $table->timestamps();
         });
     }

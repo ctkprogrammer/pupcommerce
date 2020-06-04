@@ -21,14 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register', 'AuthController@register');
     Route::post('registerProfile', 'AuthController@registerProfile');
-});
-
-Route::group(['prefix' => 'breed'], function () {
-    Route::post('create', 'BreedController@create');
-    Route::post('read', 'BreedController@index');
-    Route::get('details/{id}', 'BreedController@details');
-    Route::delete('delete/{id}', 'BreedController@delete');
-    Route::put('update/{id}', 'BreedController@update');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('login', 'AuthController@login');
 });
 
 Route::group(['prefix' => 'seller'], function () {
@@ -38,6 +32,8 @@ Route::group(['prefix' => 'seller'], function () {
     Route::delete('pup/delete/{id}', 'PupController@delete');
     Route::put('pup/update/{id}', 'PupController@update');
     Route::post('shipment/read', 'ShipmentController@seller_shipment');
+    Route::post('review/read', 'ReviewController@seller_review');
+    Route::get('review/details/{id}', 'ReviewController@details');    
 });
 
 Route::group(['prefix' => 'pup'], function () {
@@ -53,10 +49,17 @@ Route::group(['prefix' => 'buyer'], function () {
     Route::delete('delete/{id}', 'BuyerController@delete');
     Route::post('create_shipment', 'ShipmentController@create');
     Route::post('create_review', 'ReviewController@create');
+    Route::post('review', 'ReviewController@index');
 });
 
 Route::group(['prefix' => 'admin'], function () {
   
     Route::delete('delete_buyer/{id}', 'BuyerController@delete');
     Route::post('all_buyer', 'BuyerController@show');
+
+    Route::post('breed/create', 'BreedController@create');
+    Route::post('breed/read', 'BreedController@index');
+    Route::get('breed/details/{id}', 'BreedController@details');
+    Route::delete('breed/delete/{id}', 'BreedController@delete');
+    Route::put('breed/update/{id}', 'BreedController@update');
 });

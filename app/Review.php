@@ -10,10 +10,10 @@ class Review extends Model
 {
     protected $fillable = [
         'photo_url', 'pup_name', 'title', 'content', 
-      'permission'
+      'permission', 'shipment_id'
     ];
 
     public function shipment() {
-        return $this->hasOne(Shipment::class, 'review_id', 'id');
+        return $this->belongsTo(Shipment::class, 'shipment_id', 'id');
     }
 }

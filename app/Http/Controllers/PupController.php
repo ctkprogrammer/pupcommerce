@@ -61,7 +61,7 @@ class PupController extends Controller
 
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
-                'pup_name' => 'required|unique:pups',
+                'pup_name' => 'required',
                 'breed_id' => 'required',
                 'price' => 'required',
                 'photo_url' => 'required',
@@ -94,7 +94,7 @@ class PupController extends Controller
             $pup->neopar_vaccine = $request->neopar_vaccine;
             $pup->drumune_max = $request->drumune_max;
             $pup->pyrantel_deworm = $request->pyrantel_deworm;
-            $pup->status = $request->vet_inspection;
+            $pup->vet_inspection = $request->vet_inspection;
             $pup->shipment_id = 1;
             $pup->save();
 

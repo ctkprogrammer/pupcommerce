@@ -17,6 +17,7 @@ class AuthController extends Controller
     public function register(Request $request) {
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
+                'username' => 'required',
                 'role' => 'required|string|max:255',            
                 'email' => 'required|string|email|max:255',
                 'password' => 'required|string|min:1|confirmed',
@@ -25,9 +26,9 @@ class AuthController extends Controller
             if ($validator->fails()) {
                 return response()->json(['status' => 400, 'errors' => $validator->errors()], 400);
             }
-
        
             $user = User::forceCreate([
+                'user_name' => $request->username,
                 'role' => $request->role,                
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -93,5 +94,47 @@ class AuthController extends Controller
         }
     }
 
-  
+    // user login
+    public function login(Request $request) {
+        if ($request->isMethod('post')) {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|string|email|max:255',
+                'password' => 'required|string|min:1',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['status' => 400, 'errors' => $validator->errors()], 400);
+            }
+            
+            $credentials = ['email' => $request->email, 'password' => $request->password];
+            
+            if (Auth::attempt($credentials, $request->remember)) {
+                $data = User::with(['pups'])->find(Auth::user()->id);
+                return response()->json(['status' => 200, 'message' => 'success', 'data' => $data], 200);
+            } else {
+                return response()->json(['status' => 400, 'errors' => 'User does not exist.'], 400);
+            }
+        } else {
+            return response()->json(['status' => 400, 'errors' => 'wrong method.'], 400);
+        }
+    }
+
+    // user logout
+    public function logout(Request $request) {
+        if ($request->isMethod('post')) {
+            $header = $request->header('Authorization');
+            $api_token = str_replace('Bearer ', '', $header);
+            
+            $user = User::where('api_token', '=', $api_token)->first();
+            
+            if (!$user) {
+                return response()->json(['status' => 400, 'errors' => 'Invalid token.'], 400);
+            }
+
+            return response()->json(['status' => 200, 'message' => 'Successfully logout.'], 200);
+            
+        } else {
+            return response()->json(['status' => 400, 'errors' => 'wrong method.'], 400);
+        }
+    }  
 }

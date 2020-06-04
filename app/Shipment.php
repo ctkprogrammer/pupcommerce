@@ -15,23 +15,22 @@ class Shipment extends Model
         'price', 'discount', 'final_price', 'estimated_delivery_time', 
         'actual_delivery_time', 'delivery_city', 'delivery_state', 'delivery_country', 
         'delivery_address', 'delivery_zipcode', 'delivery_phone', 
-        'user_id', 'buyer_id', 'pup_id', 'review_id'
+        'user_id', 'buyer_id', 'pup_id'
     ];
 
-    public function users() {
+    public function user() {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function pups() {
+    public function pup() {
         return $this->belongsTo(Pup::class, 'pup_id', 'id');
     }
 
-    public function buyers() {
+    public function buyer() {
         return $this->belongsTo(Buyer::class, 'buyer_id', 'id');
     }
 
-    public function reviews() {
-        return $this->belongsTo(Review::class, 'shipment_id', 'id');
-
+    public function review() {
+        return $this->hasOne(Review::class, 'shipment_id', 'id');
     }
 }

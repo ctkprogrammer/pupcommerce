@@ -23,7 +23,7 @@ class BuyerController extends Controller
 
         $buyers = Buyer::All();   
 
-        $message = count($buyers) ? 'success' : 'There is no customer';
+        $message = count($buyers) ? 'success' : 'There is no buyer';
 
         return response()->json(['status' => 200, 'message' => $message, 'data' => $buyers], 200);
     }
@@ -37,7 +37,6 @@ class BuyerController extends Controller
                 'last_name' => 'required',
                 'email' => 'required',
                 'phone_number' => 'required',
-                'customer_id' => 'required',
                 'address' => 'required',
                 'zipcode' => 'required',
                 'city' => 'required',
@@ -55,7 +54,6 @@ class BuyerController extends Controller
             $buyer->last_name = $request->last_name;
             $buyer->email = $request->email;
             $buyer->phone_number = $request->phone_number;
-            $buyer->customer_id = $request->customer_id;
             $buyer->address = $request->address;
             $buyer->zipcode = $request->zipcode;
             $buyer->city = $request->city;
